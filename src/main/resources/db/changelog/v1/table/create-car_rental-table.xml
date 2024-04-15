@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="createClientTable" author="Andrey">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="rental" tableName="car_rental"/>
+            </not>
+        </preConditions>
+        <createTable schemaName="rental" tableName="car_rental">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="client_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="car_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="date" />
+            <column name="end_date" type="date" />
+
+            <column name="status" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="addCarRentalSequenceToId" author="Andrey">
+        <addDefaultValue schemaName="rental" tableName="car_rental" columnName="id"
+                         columnDataType="bigint" defaultValueComputed="nextval('rental.car_rental_id_seq')"/>
+    </changeSet>
+
+</databaseChangeLog>

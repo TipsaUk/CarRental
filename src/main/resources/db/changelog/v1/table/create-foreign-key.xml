@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="create-foreign-key-mv-client-document" author="Andrey">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists schemaName="rental" foreignKeyName="fk_client_document"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseTableSchemaName="rental"
+                                 baseTableName="document"
+                                 baseColumnNames="client_id"
+                                 constraintName="fk_client_document"
+                                 referencedTableSchemaName="rental"
+                                 referencedTableName="client"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="create-foreign-key-mv-car_rental_car" author="Andrey">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists schemaName="rental" foreignKeyName="fk_car_rental_car"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseTableSchemaName="rental"
+                                 baseTableName="car_rental"
+                                 baseColumnNames="car_id"
+                                 constraintName="fk_car_rental_car"
+                                 referencedTableSchemaName="rental"
+                                 referencedTableName="car"
+                                 referencedColumnNames="id"
+                                 onDelete="RESTRICT"
+                                 onUpdate="CASCADE"/>
+    </changeSet>
+    <changeSet id="create-foreign-key-mv-car_rental_client" author="Andrey">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists schemaName="rental" foreignKeyName="fk_car_rental_client"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseTableSchemaName="rental"
+                                 baseTableName="car_rental"
+                                 baseColumnNames="client_id"
+                                 constraintName="fk_car_rental_client"
+                                 referencedTableSchemaName="rental"
+                                 referencedTableName="client"
+                                 referencedColumnNames="id"
+                                 onDelete="RESTRICT"
+                                 onUpdate="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>

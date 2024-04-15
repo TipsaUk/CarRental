@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="createClientTable" author="Andrey">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="rental" tableName="document"/>
+            </not>
+        </preConditions>
+        <createTable schemaName="rental" tableName="document">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="client_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="series" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valid_date" type="date" />
+        </createTable>
+        <addUniqueConstraint
+                schemaName="rental"
+                tableName="document"
+                columnNames="series,number"
+                constraintName="unique-client-licence"/>
+        <addUniqueConstraint
+                schemaName="rental"
+                tableName="document"
+                columnNames="client_id"
+                constraintName="unique-document-client"/>
+    </changeSet>
+
+    <changeSet id="addDocumentSequenceToId" author="Andrey">
+        <addDefaultValue schemaName="rental" tableName="document" columnName="id"
+                         columnDataType="bigint" defaultValueComputed="nextval('rental.document_id_seq')"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,34 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="addCars" author="Andrey">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT COUNT(*)
+                                         FROM rental.car</sqlCheck>
+        </preConditions>
+        <insert schemaName="rental" tableName="car">
+            <column name="brand" value="Тойота"/>
+            <column name="model" value="Королла 9234"/>
+            <column name="number" value="Т943ВЕ777"/>
+            <column name="transmission" value="AUTOMATIC"/>
+            <column name="color" value="красный"/>
+        </insert>
+        <insert schemaName="rental" tableName="car">
+            <column name="brand" value="Форд"/>
+            <column name="model" value="Фокус-3"/>
+            <column name="number" value="М363ПР777"/>
+            <column name="transmission" value="AUTOMATIC"/>
+            <column name="color" value="металлик"/>
+        </insert>
+        <insert schemaName="rental" tableName="car">
+            <column name="brand" value="Ваз"/>
+            <column name="model" value="Лада гранта"/>
+            <column name="number" value="В534ЛК777"/>
+            <column name="transmission" value="MECHANICAL"/>
+            <column name="color" value="синий"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

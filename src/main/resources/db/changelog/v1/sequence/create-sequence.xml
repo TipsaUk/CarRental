@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="create-sequence-car" author="Andrey">
+        <createSequence schemaName="rental" sequenceName="car_id_seq"/>
+    </changeSet>
+    <changeSet id="create-sequence-car_rental" author="Andrey">
+        <createSequence schemaName="rental" sequenceName="car_rental_id_seq"/>
+    </changeSet>
+    <changeSet id="create-sequence-client" author="Andrey">
+        <createSequence schemaName="rental" sequenceName="client_id_seq"/>
+    </changeSet>
+    <changeSet id="create-sequence-document" author="Andrey">
+        <createSequence schemaName="rental" sequenceName="document_id_seq"/>
+    </changeSet>
+
+</databaseChangeLog>

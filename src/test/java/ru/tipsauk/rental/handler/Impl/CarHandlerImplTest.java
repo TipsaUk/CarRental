@@ -18,6 +18,7 @@ import java.util.Collections;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@DisplayName("Тесты для CarHandlerImplTest")
 class CarHandlerImplTest {
 
     @Mock
@@ -36,17 +37,19 @@ class CarHandlerImplTest {
     private CarHandlerImpl carHandler;
 
     @Mock
-    PrintWriter writer;
+    private PrintWriter writer;
 
-    CarDto carDto = new CarDto(1, "Toyota", "Camry"
-            , "A123BC", Transmission.AUTOMATIC, "black");
+    private CarDto carDto;
 
-    String jsonRequest = "{\"id\":1,\"brand\":\"Toyota\",\"model\":\"Camry\"" +
-            ",\"number\":\"A123BC\",\"transmission\":\"AUTOMATIC\",\"color\":\"black\"}";
+    private String jsonRequest;
 
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
+        carDto = new CarDto(1, "Toyota", "Camry"
+                , "A123BC", Transmission.AUTOMATIC, "black");
+        jsonRequest = "{\"id\":1,\"brand\":\"Toyota\",\"model\":\"Camry\"" +
+                ",\"number\":\"A123BC\",\"transmission\":\"AUTOMATIC\",\"color\":\"black\"}";
     }
 
     @Test

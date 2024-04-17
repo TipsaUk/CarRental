@@ -19,7 +19,7 @@ import java.util.Date;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Тесты для ClientHandlerImplTest")
+@DisplayName("Тесты для ClientHandlerImpl")
 class ClientHandlerImplTest {
 
     @Mock

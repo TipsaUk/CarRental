@@ -19,7 +19,7 @@ import java.util.Date;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Тесты для RentalHandlerImplTest")
+@DisplayName("Тесты для RentalHandlerImpl")
 class RentalHandlerImplTest {
 
     @Mock

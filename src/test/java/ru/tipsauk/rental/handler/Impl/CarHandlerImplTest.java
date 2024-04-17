@@ -18,7 +18,7 @@ import java.util.Collections;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Тесты для CarHandlerImplTest")
+@DisplayName("Тесты для CarHandlerImpl")
 class CarHandlerImplTest {
 
     @Mock

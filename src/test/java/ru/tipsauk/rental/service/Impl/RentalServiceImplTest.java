@@ -19,7 +19,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Тесты для RentalServiceImplTest")
+@DisplayName("Тесты для RentalServiceImpl")
 class RentalServiceImplTest {
 
     @Mock

@@ -21,7 +21,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Тесты для ClientServiceImplTest")
+@DisplayName("Тесты для ClientServiceImpl")
 class ClientServiceImplTest {
 
     @Mock

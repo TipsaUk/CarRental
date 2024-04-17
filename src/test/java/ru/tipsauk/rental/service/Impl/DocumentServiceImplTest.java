@@ -16,7 +16,7 @@ import java.util.Date;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Тесты для DocumentServiceImplTest")
+@DisplayName("Тесты для DocumentServiceImpl")
 class DocumentServiceImplTest {
 
     @Mock

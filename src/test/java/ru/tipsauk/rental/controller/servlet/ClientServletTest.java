@@ -14,6 +14,7 @@ import java.io.IOException;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@DisplayName("Тесты для ClientServlet")
 class ClientServletTest {
 
     private ClientHandler clientHandler;

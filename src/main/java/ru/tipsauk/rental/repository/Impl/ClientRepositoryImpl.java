@@ -32,7 +32,7 @@ public class ClientRepositoryImpl implements ClientRepository {
                   doc.number,
                   doc.valid_date AS validDate
                 FROM rental.client cl
-                 JOIN rental.document doc
+                 LEFT JOIN rental.document doc
                    ON cl.id = doc.client_id
                 ORDER BY cl.name""";
         try (PreparedStatement preparedStatement = databaseService.createPreparedStatement(sql);
@@ -58,7 +58,7 @@ public class ClientRepositoryImpl implements ClientRepository {
                   doc.number,
                   doc.valid_date AS validDate
                 FROM rental.client cl
-                 JOIN rental.document doc
+                 LEFT JOIN rental.document doc
                    ON cl.id = doc.client_id
                 WHERE cl.id = ?""";
         try (PreparedStatement preparedStatement = databaseService.createPreparedStatement(sql)) {

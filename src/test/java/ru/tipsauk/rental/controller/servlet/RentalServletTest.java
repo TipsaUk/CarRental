@@ -14,6 +14,7 @@ import java.io.IOException;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@DisplayName("Тесты для RentalServlet")
 class RentalServletTest {
 
     private RentalHandler rentalHandler;

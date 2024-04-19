@@ -35,6 +35,25 @@ public class DatabaseService {
         }
     }
 
+    public void startTransaction() throws SQLException {
+        getConnection().setAutoCommit(false);
+    }
+
+    public void commitTransaction() throws SQLException {
+        getConnection().commit();
+        getConnection().setAutoCommit(true);
+    }
+
+    public void rollbackTransaction() {
+        if (connection != null) {
+            try {
+                connection.rollback();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public PreparedStatement createPreparedStatement(String sql) throws SQLException {
         try {
             Class.forName("org.postgresql.Driver");

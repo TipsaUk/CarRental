@@ -25,6 +25,7 @@
         <org.junit.jupiter.version>5.9.3</org.junit.jupiter.version>
         <org.mockito.version>5.2.0</org.mockito.version>
         <org.assertj.version>3.24.2</org.assertj.version>
+        <org.testcontainers.version>1.19.3</org.testcontainers.version>
     </properties>
 
     <dependencies>
@@ -98,6 +99,18 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>${org.assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${org.testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${org.testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

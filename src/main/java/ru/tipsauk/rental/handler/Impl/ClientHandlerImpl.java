@@ -68,7 +68,7 @@ public class ClientHandlerImpl implements ClientHandler {
     @Override
     public void deleteById(HttpServletRequest request, HttpServletResponse response) {
         try {
-            long id  = Long.parseLong(request.getParameter("id"));
+            long id  = RequestUtils.getIdFromRequest(request);
             clientService.deleteById(id);
             RequestUtils.setResponse(response, objectMapper.writeValueAsString(
                     new ApiResponse("SUCCESS", "The client has been successfully deleted")));

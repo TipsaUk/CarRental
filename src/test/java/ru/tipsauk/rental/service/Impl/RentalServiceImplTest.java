@@ -19,7 +19,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Тесты для RentalServiceImpl")
 class RentalServiceImplTest {
 
     @Mock
@@ -49,13 +48,14 @@ class RentalServiceImplTest {
     }
 
     @Test
-    @DisplayName("Получение списка аренды машин")
-    void findAll() {
+    void findAll_WhenRetrievingAllСarRentals_ExpectCorrectListOfСarRentalDTOs() {
         List<CarRental> cars = Arrays.asList(carRental1, carRental2);
         when(rentalRepository.findAll()).thenReturn(cars);
         when(carRentalMapper.carRentalToCarRentalDto(carRental1)).thenReturn(carRentalDto1);
         when(carRentalMapper.carRentalToCarRentalDto(carRental2)).thenReturn(carRentalDto2);
+
         List<CarRentalDto> result = rentalService.findAll();
+
         assertThat(result).hasSize(2);
         assertThat(result.get(0)).isEqualTo(carRentalDto1);
         assertThat(result.get(1)).isEqualTo(carRentalDto2);
@@ -63,38 +63,40 @@ class RentalServiceImplTest {
     }
 
     @Test
-    @DisplayName("Получение аренды машины по id")
-    void findById() {
+    void findById_WhenRetrievingСarRentalById_ExpectCorrectСarRentalDTO() {
         when(rentalRepository.findById(1)).thenReturn(carRental1);
         when(carRentalMapper.carRentalToCarRentalDto(carRental1)).thenReturn(carRentalDto1);
+
         CarRentalDto result = rentalService.findById(1);
+
         assertThat(result).isNotNull().isEqualTo(carRentalDto1);
         verify(rentalRepository, times(1)).findById(1);
     }
 
     @Test
-    @DisplayName("Создание аренды машины")
-    void create() {
+    void create_WhenCreatingСarRental_ExpectSuccessfulCreationAndReturnСarRental() {
         when(rentalRepository.create(carRental1)).thenReturn(carRental1);
         when(carRentalMapper.carRentalDtoToCarRental(carRentalDto1)).thenReturn(carRental1);
+
         CarRental result = rentalService.create(carRentalDto1);
+
         assertThat(result).isNotNull().isEqualTo(carRental1);
         verify(rentalRepository, times(1)).create(carRental1);
     }
 
     @Test
-    @DisplayName("Обновление аренды машины")
-    void update() {
+    void update_WhenUpdatingСarRental_ExpectSuccessfulUpdateAndReturnСarRental() {
         when(rentalRepository.update(carRental1)).thenReturn(carRental1);
         when(carRentalMapper.carRentalDtoToCarRental(carRentalDto1)).thenReturn(carRental1);
+
         CarRental result = rentalService.update(carRentalDto1);
+
         assertThat(result).isNotNull().isEqualTo(carRental1);
         verify(rentalRepository, times(1)).update(carRental1);
     }
 
     @Test
-    @DisplayName("Удаление аренды машины")
-    void deleteById() {
+    void deleteById_WhenDeletingСarRentalById_ExpectSuccessfulDeletion() {
         rentalService.deleteById(1);
         verify(rentalRepository, times(1)).deleteById(1);
     }

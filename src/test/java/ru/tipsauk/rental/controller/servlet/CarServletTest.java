@@ -17,7 +17,6 @@ import java.io.IOException;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@DisplayName("Тесты для CarServlet")
 class CarServletTest {
 
     private CarHandler carHandler;
@@ -43,37 +42,32 @@ class CarServletTest {
     }
 
     @Test
-    @DisplayName("Тест для get - запроса без параметра")
-    public void testDoGetWithoutIdParameter() throws ServletException, IOException {
+    public void doGet_WithoutIdParameter_AllCarsReturned() throws ServletException, IOException {
         carServlet.doGet(request, response);
         verify(carHandler).findAll(request, response);
     }
 
     @Test
-    @DisplayName("Тест для get - запроса с параметром id")
-    public void testDoGetWithIdParameter() throws ServletException, IOException {
-        when(request.getParameter("id")).thenReturn("1");
+    public void doGet_WithIdParameter_CarByIdReturned() throws ServletException, IOException {
+        when(request.getPathInfo()).thenReturn("/1");
         carServlet.doGet(request, response);
         verify(carHandler).findById(request, response);
     }
 
     @Test
-    @DisplayName("Тест для post - запроса")
-    public void testDoPost() throws ServletException, IOException {
+    public void doPost_CarCreated() throws ServletException, IOException {
         carServlet.doPost(request, response);
         verify(carHandler).create(request, response);
     }
 
     @Test
-    @DisplayName("Тест для put - запроса")
-    public void testDoPut() throws ServletException, IOException {
+    public void doPut_CarUpdated() throws ServletException, IOException {
         carServlet.doPut(request, response);
         verify(carHandler).update(request, response);
     }
 
     @Test
-    @DisplayName("Тест для delete - запроса")
-    public void testDoDelete() throws ServletException, IOException {
+    public void doDelete_CarDeleted() throws ServletException, IOException {
         carServlet.doDelete(request, response);
         verify(carHandler).deleteById(request, response);
     }

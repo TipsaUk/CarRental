@@ -66,7 +66,7 @@ public class RentalHandlerImpl implements RentalHandler {
     @Override
     public void deleteById(HttpServletRequest request, HttpServletResponse response) {
         try {
-            long id  = Long.parseLong(request.getParameter("id"));
+            long id  = RequestUtils.getIdFromRequest(request);
             rentalService.deleteById(id);
             RequestUtils.setResponse(response, objectMapper.writeValueAsString(
                     new ApiResponse("SUCCESS", "The car rental has been successfully deleted")));

@@ -19,7 +19,6 @@ import java.util.Date;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Тесты для ClientHandlerImpl")
 class ClientHandlerImplTest {
 
     @Mock
@@ -52,12 +51,13 @@ class ClientHandlerImplTest {
     }
 
     @Test
-    @DisplayName("Получение списка всех клиентов")
-    void findAll() throws IOException {
+    void findAll_WhenRetrievingAllClients_ExpectSuccessfulResponseWithCorrectContent() throws IOException {
         when(response.getWriter()).thenReturn(writer);
         when(clientService.findAll()).thenReturn(Collections.emptyList());
         when(objectMapper.writeValueAsString(Collections.emptyList())).thenReturn("expectedResponse");
+
         clientHandler.findAll(request, response);
+
         verify(clientService).findAll();
         verify(response).setStatus(HttpServletResponse.SC_OK);
         verify(response).setContentType("application/json");
@@ -66,14 +66,15 @@ class ClientHandlerImplTest {
     }
 
     @Test
-    @DisplayName("Получение клиента по id")
-    void findById() throws IOException {
-        when(request.getParameter("id")).thenReturn("1");
+    void findById_WhenRetrievingClientById_ExpectSuccessfulResponseWithCorrectContent() throws IOException {
+        when(request.getPathInfo()).thenReturn("/1");
         when(response.getWriter()).thenReturn(writer);
-        when(clientService.findById(1L)).thenReturn(clientDto);
+        when(clientService.findById(1)).thenReturn(clientDto);
         when(objectMapper.writeValueAsString(clientDto)).thenReturn("");
+
         clientHandler.findById(request, response);
-        verify(clientService).findById(1L);
+
+        verify(clientService).findById(1);
         verify(response).setStatus(HttpServletResponse.SC_OK);
         verify(response).setContentType("application/json");
         verify(response).getWriter();
@@ -81,14 +82,15 @@ class ClientHandlerImplTest {
     }
 
     @Test
-    @DisplayName("Создание клиента")
-    void create() throws IOException {
+    void create_WhenCreatingClient_ExpectSuccessfulResponseWithCorrectContent() throws IOException {
         BufferedReader reader = new BufferedReader(new StringReader(jsonRequest));
         when(request.getReader()).thenReturn(reader);
         when(response.getWriter()).thenReturn(writer);
         when(objectMapper.readValue(jsonRequest, ClientDto.class)).thenReturn(clientDto);
         when(objectMapper.writeValueAsString(any(ApiResponse.class))).thenReturn("expectedResponse");
+
         clientHandler.create(request, response);
+
         verify(clientService).create(clientDto);
         verify(response).setStatus(HttpServletResponse.SC_OK);
         verify(response).setContentType("application/json");
@@ -96,14 +98,15 @@ class ClientHandlerImplTest {
     }
 
     @Test
-    @DisplayName("Обновление клиента")
-    void update() throws IOException {
+    void update_WhenUpdatingClient_ExpectSuccessfulResponseWithCorrectContent() throws IOException {
         BufferedReader reader = new BufferedReader(new StringReader(jsonRequest));
         when(request.getReader()).thenReturn(reader);
         when(response.getWriter()).thenReturn(writer);
         when(objectMapper.readValue(jsonRequest, ClientDto.class)).thenReturn(clientDto);
         when(objectMapper.writeValueAsString(any(ApiResponse.class))).thenReturn("expectedResponse");
+
         clientHandler.update(request, response);
+
         verify(clientService).update(clientDto);
         verify(response).setStatus(HttpServletResponse.SC_OK);
         verify(response).setContentType("application/json");
@@ -111,13 +114,14 @@ class ClientHandlerImplTest {
     }
 
     @Test
-    @DisplayName("Удаление клиента")
-    void deleteById() throws IOException {
-        when(request.getParameter("id")).thenReturn("1");
+    void deleteById_WhenDeletingClientById_ExpectSuccessfulResponseWithCorrectContent() throws IOException {
+        when(request.getPathInfo()).thenReturn("/1");
         when(response.getWriter()).thenReturn(writer);
         when(objectMapper.writeValueAsString(any(ApiResponse.class))).thenReturn("expectedResponse");
+
         clientHandler.deleteById(request, response);
-        verify(clientService).deleteById(1L);
+
+        verify(clientService).deleteById(1);
         verify(response).setStatus(HttpServletResponse.SC_OK);
         verify(response.getWriter()).write("expectedResponse");
     }

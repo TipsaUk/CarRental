@@ -1,6 +1,7 @@
 package ru.tipsauk.rental.repository;
 
 import liquibase.Liquibase;
+import liquibase.command.CommandScope;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;

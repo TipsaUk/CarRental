@@ -12,7 +12,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Интеграционные тесты для CarRepositoryImpl")
 class CarRepositoryImplTest extends BaseDatabaseTest {
 
     private static Car car1;
@@ -43,8 +42,7 @@ class CarRepositoryImplTest extends BaseDatabaseTest {
     }
 
     @Test
-    @DisplayName("Создание машины")
-    void create() {
+    void create_WhenCreatingCar_ExpectSuccessfulCreation() {
         Car car = new Car(0, "ЗАЗ", "ЗАЗ-965"
                 , "Е836ФА175", Transmission.MECHANICAL, "голубой");
         Car newCar = carRepository.create(car);
@@ -52,8 +50,7 @@ class CarRepositoryImplTest extends BaseDatabaseTest {
     }
 
     @Test
-    @DisplayName("Проверка создания дубликата машины")
-    void createDuplicate() {
+    void createDuplicate_WhenCreatingDuplicateCar_ExpectEntityCreateException() {
         assertThrows(EntityCreateException.class, () -> {
             carRepository.create(car1);
         });
@@ -61,20 +58,20 @@ class CarRepositoryImplTest extends BaseDatabaseTest {
     }
 
     @Test
-    @DisplayName("Обновление данных машины")
-    void update() {
+    void update_WhenUpdatingCarData_ExpectSuccessfulUpdate() {
         List<Car> cars = carRepository.findAll();
         Car car = cars.get(0);
         car.setColor("белый");
+
         carRepository.update(car);
+
         Car updatedCar = carRepository.findById(car.getId());
         assertThat(updatedCar).isNotNull();
         assertThat(updatedCar.getColor()).isEqualTo("белый");
     }
 
     @Test
-    @DisplayName("Обновление данных машины по несуществующему id")
-    void failUpdate() {
+    void update_WhenUpdatingCarDataWithNonExistentId_ExpectEntityOperationException() {
         car1.setId(999999);
         assertThrows(EntityOperationException.class, () -> {
             carRepository.update(car1);
@@ -82,31 +79,27 @@ class CarRepositoryImplTest extends BaseDatabaseTest {
     }
 
     @Test
-    @DisplayName("Получение данных всех машин")
-    void findAll() {
+    void findAll_WhenRetrievingAllCars_ExpectCorrectNumberOfCars() {
         List<Car> cars = carRepository.findAll();
         assertThat(cars).isNotNull().hasSize(2);
     }
 
     @Test
-    @DisplayName("Получение данных машины по id")
-    void findById() {
+    void findById_WhenRetrievingCarById_ExpectCorrectCar() {
         List<Car> cars = carRepository.findAll();
         Car car = carRepository.findById(cars.get(0).getId());
         assertThat(car).isEqualTo(cars.get(0));
     }
 
     @Test
-    @DisplayName("Получение данных машины по несуществующему id")
-    void failFindById() {
+    void findById_WhenRetrievingCarByNonExistentId_ExpectEntityOperationException() {
         assertThrows(EntityOperationException.class, () -> {
             carRepository.findById(999999);
         });
     }
 
     @Test
-    @DisplayName("Удаление машины по id")
-    void deleteById() {
+    void deleteById_WhenDeletingCarById_ExpectSuccessfulDeletion() {
         List<Car> cars = carRepository.findAll();
         carRepository.deleteById(cars.get(0).getId());
         assertThrows(EntityOperationException.class, () -> {
@@ -115,8 +108,7 @@ class CarRepositoryImplTest extends BaseDatabaseTest {
     }
 
     @Test
-    @DisplayName("Удаление машины по несуществующему id")
-    void failDeleteById() {
+    void deleteById_WhenDeletingCarByNonExistentId_ExpectEntityOperationException() {
         assertThrows(EntityOperationException.class, () -> {
             carRepository.deleteById(999999);
         });

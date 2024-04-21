@@ -18,7 +18,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Тесты для CarServiceImpl")
 class CarServiceImplTest {
 
     @Mock
@@ -52,13 +51,14 @@ class CarServiceImplTest {
     }
 
     @Test
-    @DisplayName("Получение списка всех машин")
-    void findAll() {
+    void findAll_WhenRetrievingAllCars_ExpectCorrectListOfCarDTOs() {
         List<Car> cars = Arrays.asList(car1, car2);
         when(carRepository.findAll()).thenReturn(cars);
         when(carMapper.carToCarDto(car1)).thenReturn(carDto1);
         when(carMapper.carToCarDto(car2)).thenReturn(carDto2);
+
         List<CarDto> result = carService.findAll();
+
         assertThat(result).hasSize(2);
         assertThat(result.get(0)).isEqualTo(carDto1);
         assertThat(result.get(1)).isEqualTo(carDto2);
@@ -66,38 +66,40 @@ class CarServiceImplTest {
     }
 
     @Test
-    @DisplayName("Получение машины по id")
-    void findById() {
+    void findById_WhenRetrievingCarById_ExpectCorrectCarDTO() {
         when(carRepository.findById(1)).thenReturn(car1);
         when(carMapper.carToCarDto(car1)).thenReturn(carDto1);
+
         CarDto result = carService.findById(1);
+
         assertThat(result).isNotNull().isEqualTo(carDto1);
         verify(carRepository, times(1)).findById(1);
     }
 
     @Test
-    @DisplayName("Создание машины")
-    void create() {
+    void create_WhenCreatingCar_ExpectSuccessfulCreationAndReturnCar() {
         when(carRepository.create(car1)).thenReturn(car1);
         when(carMapper.carDtoToCar(carDto1)).thenReturn(car1);
+
         Car result = carService.create(carDto1);
+
         assertThat(result).isNotNull().isEqualTo(car1);
         verify(carRepository, times(1)).create(car1);
     }
 
     @Test
-    @DisplayName("Обновление машины")
-    void update() {
+    void update_WhenUpdatingCar_ExpectSuccessfulUpdateAndReturnCar() {
         when(carRepository.update(car1)).thenReturn(car1);
         when(carMapper.carDtoToCar(carDto1)).thenReturn(car1);
+
         Car result = carService.update(carDto1);
+
         assertThat(result).isNotNull().isEqualTo(car1);
         verify(carRepository, times(1)).update(car1);
     }
 
     @Test
-    @DisplayName("Удаление машины")
-    void deleteById() {
+    void deleteById_WhenDeletingCarById_ExpectSuccessfulDeletion() {
         carService.deleteById(1);
         verify(carRepository, times(1)).deleteById(1);
     }

@@ -16,7 +16,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Интеграционные тесты для ClientRepositoryImpl")
 class ClientRepositoryImplTest extends BaseDatabaseTest {
 
     private static Client client1;
@@ -52,41 +51,40 @@ class ClientRepositoryImplTest extends BaseDatabaseTest {
     }
 
     @Test
-    @DisplayName("Создание клиента и документа")
-    void create() {
+    void create_WhenCreatingClient_ExpectSuccessfulCreation() {
         Client client = new Client(3, "Алексей", "Сидоров",
                 new Document(3, "9999", "111111"
                         , Date.from(LocalDate.of(2027, 4, 14)
                         .atStartOfDay(ZoneId.systemDefault()).toInstant())));
         Client newClient = clientRepository.create(client);
-        documentRepository.create(newClient.getDocument());
+        Document document = client.getDocument();
+        document.setClient_id(newClient.getId());
+        documentRepository.create(document);
         assertThat(clientRepository.findById(newClient.getId())).isEqualTo(newClient);
     }
 
     @Test
-    @DisplayName("Проверка создания дубликата клиента")
-    void createDuplicate() {
+    void createDuplicate_WhenCreatingDuplicateClient_ExpectEntityCreateException() {
         assertThrows(EntityCreateException.class, () -> {
             clientRepository.create(client1);
         });
-
     }
 
     @Test
-    @DisplayName("Обновление данных клиента")
-    void update() {
+    void update_WhenUpdatingClient_ExpectSuccessfulUpdate() {
         List<Client> clients = clientRepository.findAll();
         Client client = clients.get(0);
         client.setSurname("Кузнецов");
+
         clientRepository.update(client);
+
         Client updatedClient = clientRepository.findById(client.getId());
         assertThat(updatedClient).isNotNull();
         assertThat(updatedClient.getSurname()).isEqualTo("Кузнецов");
     }
 
     @Test
-    @DisplayName("Обновление данных клиента по несуществующему id")
-    void failUpdate() {
+    void update_WhenUpdatingClientWithNonExistentId_ExpectEntityOperationException() {
         client1.setId(99999);
         assertThrows(EntityOperationException.class, () -> {
             clientRepository.update(client1);
@@ -94,31 +92,27 @@ class ClientRepositoryImplTest extends BaseDatabaseTest {
     }
 
     @Test
-    @DisplayName("Получение данных всех клиентов")
-    void findAll() {
+    void findAll_WhenRetrievingAllClients_ExpectCorrectNumberOfClients() {
         List<Client> clients = clientRepository.findAll();
         assertThat(clients).isNotNull().hasSizeGreaterThanOrEqualTo(2);
     }
 
     @Test
-    @DisplayName("Получение данных клиента по id")
-    void findById() {
+    void findById_WhenRetrievingClientById_ExpectCorrectClient() {
         List<Client> clients = clientRepository.findAll();
         Client client = clientRepository.findById(clients.get(0).getId());
         assertThat(client.getName()).isEqualTo(clients.get(0).getName());
     }
 
     @Test
-    @DisplayName("Получение данных клиента по несуществующему id")
-    void failFindById() {
+    void findById_WhenRetrievingClientByNonExistentId_ExpectEntityOperationException() {
         assertThrows(EntityOperationException.class, () -> {
             clientRepository.findById(99999);
         });
     }
 
     @Test
-    @DisplayName("Удаление клиента по id")
-    void deleteById() {
+    void deleteById_WhenDeletingClientById_ExpectSuccessfulDeletion() {
         List<Client> clients = clientRepository.findAll();
         clientRepository.deleteById(clients.get(0).getId());
         assertThrows(EntityOperationException.class, () -> {
@@ -127,8 +121,7 @@ class ClientRepositoryImplTest extends BaseDatabaseTest {
     }
 
     @Test
-    @DisplayName("Удаление клиента по несуществующему id")
-    void failDeleteById() {
+    void deleteById_WhenDeletingClientByNonExistentId_ExpectEntityOperationException() {
         assertThrows(EntityOperationException.class, () -> {
             clientRepository.deleteById(99999);
         });

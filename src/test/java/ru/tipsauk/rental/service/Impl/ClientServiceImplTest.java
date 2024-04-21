@@ -21,7 +21,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Тесты для ClientServiceImpl")
 class ClientServiceImplTest {
 
     @Mock
@@ -58,13 +57,14 @@ class ClientServiceImplTest {
     }
 
     @Test
-    @DisplayName("Получение списка всех клиентов")
-    void findAll() {
+    void findAll_WhenRetrievingAllClients_ExpectCorrectListOfClientDTOs() {
         List<Client> cars = Arrays.asList(client1, client2);
         when(clientRepository.findAll()).thenReturn(cars);
         when(clientMapper.clientToClientDto(client1)).thenReturn(clientDto1);
         when(clientMapper.clientToClientDto(client2)).thenReturn(clientDto2);
+
         List<ClientDto> result = clientService.findAll();
+
         assertThat(result).hasSize(2);
         assertThat(result.get(0)).isEqualTo(clientDto1);
         assertThat(result.get(1)).isEqualTo(clientDto2);
@@ -72,38 +72,40 @@ class ClientServiceImplTest {
     }
 
     @Test
-    @DisplayName("Получение клиента по id")
-    void findById() {
+    void findById_WhenRetrievingClientById_ExpectCorrectClientDTO() {
         when(clientRepository.findById(1)).thenReturn(client1);
         when(clientMapper.clientToClientDto(client1)).thenReturn(clientDto1);
+
         ClientDto result = clientService.findById(1);
+
         assertThat(result).isNotNull().isEqualTo(clientDto1);
         verify(clientRepository, times(1)).findById(1);
     }
 
     @Test
-    @DisplayName("Создание клиента")
-    void create() {
+    void create_WhenCreatingClient_ExpectSuccessfulCreationAndReturnClient() {
         when(clientRepository.create(client1)).thenReturn(client1);
         when(clientMapper.clientDtoToClient(clientDto1)).thenReturn(client1);
+
         Client result = clientService.create(clientDto1);
+
         assertThat(result).isNotNull().isEqualTo(client1);
         verify(clientRepository, times(1)).create(client1);
     }
 
     @Test
-    @DisplayName("Обновление клиента")
-    void update() {
+    void update_WhenUpdatingClient_ExpectSuccessfulUpdateAndReturnClient() {
         when(clientRepository.update(client1)).thenReturn(client1);
         when(clientMapper.clientDtoToClient(clientDto1)).thenReturn(client1);
+
         Client result = clientService.update(clientDto1);
+
         assertThat(result).isNotNull().isEqualTo(client1);
         verify(clientRepository, times(1)).update(client1);
     }
 
     @Test
-    @DisplayName("Удаление клиента")
-    void deleteById() {
+    void deleteById_WhenDeletingClientById_ExpectSuccessfulDeletion() {
         clientService.deleteById(1);
         verify(clientRepository, times(1)).deleteById(1);
     }

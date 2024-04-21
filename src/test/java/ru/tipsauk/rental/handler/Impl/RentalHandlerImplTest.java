@@ -19,7 +19,6 @@ import java.util.Date;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Тесты для RentalHandlerImpl")
 class RentalHandlerImplTest {
 
     @Mock
@@ -51,12 +50,13 @@ class RentalHandlerImplTest {
     }
 
     @Test
-    @DisplayName("Получение списка аренды машин")
-    void findAll() throws IOException {
+    void findAll_WhenRetrievingAllCarRentals_ExpectSuccessfulResponseWithCorrectContent() throws IOException {
         when(response.getWriter()).thenReturn(writer);
         when(rentalService.findAll()).thenReturn(Collections.emptyList());
         when(objectMapper.writeValueAsString(Collections.emptyList())).thenReturn("expectedResponse");
+
         rentalHandler.findAll(request, response);
+
         verify(rentalService).findAll();
         verify(response).setStatus(HttpServletResponse.SC_OK);
         verify(response).setContentType("application/json");
@@ -65,14 +65,15 @@ class RentalHandlerImplTest {
     }
 
     @Test
-    @DisplayName("Получение аренды машины по id")
-    void findById() throws IOException {
-        when(request.getParameter("id")).thenReturn("1");
+    void findById_WhenRetrievingCarRentalById_ExpectSuccessfulResponseWithCorrectContent() throws IOException {
+        when(request.getPathInfo()).thenReturn("/1");
         when(response.getWriter()).thenReturn(writer);
-        when(rentalService.findById(1L)).thenReturn(carRentalDto);
+        when(rentalService.findById(1)).thenReturn(carRentalDto);
         when(objectMapper.writeValueAsString(carRentalDto)).thenReturn("");
+
         rentalHandler.findById(request, response);
-        verify(rentalService).findById(1L);
+
+        verify(rentalService).findById(1);
         verify(response).setStatus(HttpServletResponse.SC_OK);
         verify(response).setContentType("application/json");
         verify(response).getWriter();
@@ -80,14 +81,15 @@ class RentalHandlerImplTest {
     }
 
     @Test
-    @DisplayName("Создание аренды машины")
-    void create() throws IOException {
+    void create_WhenCreatingCarRental_ExpectSuccessfulResponseWithCorrectContent() throws IOException {
         BufferedReader reader = new BufferedReader(new StringReader(jsonRequest));
         when(request.getReader()).thenReturn(reader);
         when(response.getWriter()).thenReturn(writer);
         when(objectMapper.readValue(jsonRequest, CarRentalDto.class)).thenReturn(carRentalDto);
         when(objectMapper.writeValueAsString(any(ApiResponse.class))).thenReturn("expectedResponse");
+
         rentalHandler.create(request, response);
+
         verify(rentalService).create(carRentalDto);
         verify(response).setStatus(HttpServletResponse.SC_OK);
         verify(response).setContentType("application/json");
@@ -95,14 +97,15 @@ class RentalHandlerImplTest {
     }
 
     @Test
-    @DisplayName("Обновление аренды машины")
-    void update() throws IOException {
+    void update_WhenUpdatingCarRental_ExpectSuccessfulResponseWithCorrectContent() throws IOException {
         BufferedReader reader = new BufferedReader(new StringReader(jsonRequest));
         when(request.getReader()).thenReturn(reader);
         when(response.getWriter()).thenReturn(writer);
         when(objectMapper.readValue(jsonRequest, CarRentalDto.class)).thenReturn(carRentalDto);
         when(objectMapper.writeValueAsString(any(ApiResponse.class))).thenReturn("expectedResponse");
+
         rentalHandler.update(request, response);
+
         verify(rentalService).update(carRentalDto);
         verify(response).setStatus(HttpServletResponse.SC_OK);
         verify(response).setContentType("application/json");
@@ -110,13 +113,14 @@ class RentalHandlerImplTest {
     }
 
     @Test
-    @DisplayName("Удаление аренды машины")
-    void deleteById() throws IOException {
-        when(request.getParameter("id")).thenReturn("1");
+    void deleteById_WhenDeletingCarRentalById_ExpectSuccessfulResponseWithCorrectContent() throws IOException {
+        when(request.getPathInfo()).thenReturn("/1");
         when(response.getWriter()).thenReturn(writer);
         when(objectMapper.writeValueAsString(any(ApiResponse.class))).thenReturn("expectedResponse");
+
         rentalHandler.deleteById(request, response);
-        verify(rentalService).deleteById(1L);
+
+        verify(rentalService).deleteById(1);
         verify(response).setStatus(HttpServletResponse.SC_OK);
         verify(response.getWriter()).write("expectedResponse");
     }

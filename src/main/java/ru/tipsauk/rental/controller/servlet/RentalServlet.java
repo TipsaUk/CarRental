@@ -14,7 +14,7 @@ import java.io.IOException;
         name = "RentalServlet",
         loadOnStartup = 3,
         description = "Servlet for rental",
-        urlPatterns = {"/car_rental"}
+        urlPatterns = {"/rentals/*"}
 )
 public class RentalServlet extends HttpServlet {
 
@@ -28,7 +28,8 @@ public class RentalServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getParameter("id") != null) {
+        String pathInfo = req.getPathInfo();
+        if (pathInfo != null && pathInfo.startsWith("/")) {
             rentalHandler.findById(req, resp);
         } else {
             rentalHandler.findAll(req, resp);

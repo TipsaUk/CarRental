@@ -16,7 +16,6 @@ import java.util.Date;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Тесты для DocumentServiceImpl")
 class DocumentServiceImplTest {
 
     @Mock
@@ -40,21 +39,23 @@ class DocumentServiceImplTest {
     }
 
     @Test
-    @DisplayName("Создание документа клиента")
-    void create() {
+    void create_WhenCreatingDocument_ExpectSuccessfulCreationAndReturnDocument() {
         when(documentRepository.create(document)).thenReturn(document);
         when(documentMapper.DocumentDtoToDocument(documentDto)).thenReturn(document);
+
         Document result = documentService.create(documentDto);
+
         assertThat(result).isNotNull().isEqualTo(document);
         verify(documentRepository, times(1)).create(document);
     }
 
     @Test
-    @DisplayName("Обновление документа клиента")
-    void update() {
+    void update_WhenUpdatingDocument_ExpectSuccessfulUpdateAndReturnDocument() {
         when(documentRepository.update(document)).thenReturn(document);
         when(documentMapper.DocumentDtoToDocument(documentDto)).thenReturn(document);
+
         Document result = documentService.update(documentDto);
+
         assertThat(result).isNotNull().isEqualTo(document);
         verify(documentRepository, times(1)).update(document);
     }

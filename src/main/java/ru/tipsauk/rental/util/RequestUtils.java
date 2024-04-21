@@ -42,7 +42,11 @@ public class RequestUtils {
     public static void findById(HttpServletRequest request, HttpServletResponse response
             , ObjectMapper objectMapper, EntityService entityService) {
         try {
-            long id  = Long.parseLong(request.getParameter("id"));
+            long id  = getIdFromRequest(request);
+            if (id == 0) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
             String jsonResponse = objectMapper.writeValueAsString(entityService.findById(id));
             setResponse(response, jsonResponse);
         } catch (EntityOperationException e) {
@@ -52,6 +56,14 @@ public class RequestUtils {
             e.printStackTrace();
         }
     }
-
+    public static long getIdFromRequest(HttpServletRequest request) throws IOException {
+        String pathInfo = request.getPathInfo();
+        if (pathInfo != null && pathInfo.startsWith("/")) {
+            String[] parts = pathInfo.split("/");
+            return parts.length >= 2 ? Long.parseLong(parts[1]) : 0;
+        } else {
+            return 0;
+        }
+    }
 
 }

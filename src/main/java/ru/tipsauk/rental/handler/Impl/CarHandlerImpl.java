@@ -66,7 +66,11 @@ public class CarHandlerImpl implements CarHandler {
     @Override
     public void deleteById(HttpServletRequest request, HttpServletResponse response) {
         try {
-            long id  = Long.parseLong(request.getParameter("id"));
+            long id  = RequestUtils.getIdFromRequest(request);
+            if (id == 0) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
             carService.deleteById(id);
             RequestUtils.setResponse(response, objectMapper.writeValueAsString(
                     new ApiResponse("SUCCESS", "The car has been successfully deleted")));

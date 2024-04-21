@@ -18,7 +18,6 @@ import java.util.Collections;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@DisplayName("Тесты для CarHandlerImpl")
 class CarHandlerImplTest {
 
     @Mock
@@ -53,12 +52,13 @@ class CarHandlerImplTest {
     }
 
     @Test
-    @DisplayName("Получение списка всех машин")
-    void findAll() throws IOException {
+    void findAll_WhenRetrievingAllCars_ExpectSuccessfulResponseWithCorrectContent() throws IOException {
         when(response.getWriter()).thenReturn(writer);
         when(carService.findAll()).thenReturn(Collections.emptyList());
         when(objectMapper.writeValueAsString(Collections.emptyList())).thenReturn("expectedResponse");
+
         carHandler.findAll(request, response);
+
         verify(carService).findAll();
         verify(response).setStatus(HttpServletResponse.SC_OK);
         verify(response).setContentType("application/json");
@@ -67,14 +67,15 @@ class CarHandlerImplTest {
     }
 
     @Test
-    @DisplayName("Получение машины по id")
-    void findById() throws IOException {
-        when(request.getParameter("id")).thenReturn("1");
+    void findById_WhenRetrievingCarById_ExpectSuccessfulResponseWithCorrectContent() throws IOException {
+        when(request.getPathInfo()).thenReturn("/1");
         when(response.getWriter()).thenReturn(writer);
-        when(carService.findById(1L)).thenReturn(carDto);
+        when(carService.findById(1)).thenReturn(carDto);
         when(objectMapper.writeValueAsString(carDto)).thenReturn("");
+
         carHandler.findById(request, response);
-        verify(carService).findById(1L);
+
+        verify(carService).findById(1);
         verify(response).setStatus(HttpServletResponse.SC_OK);
         verify(response).setContentType("application/json");
         verify(response).getWriter();
@@ -82,14 +83,15 @@ class CarHandlerImplTest {
     }
 
     @Test
-    @DisplayName("Создание машины")
-    void create() throws IOException {
+    void create_WhenCreatingCar_ExpectSuccessfulResponseWithCorrectContent() throws IOException {
         BufferedReader reader = new BufferedReader(new StringReader(jsonRequest));
         when(request.getReader()).thenReturn(reader);
         when(response.getWriter()).thenReturn(writer);
         when(objectMapper.readValue(jsonRequest, CarDto.class)).thenReturn(carDto);
         when(objectMapper.writeValueAsString(any(ApiResponse.class))).thenReturn("expectedResponse");
+
         carHandler.create(request, response);
+
         verify(carService).create(carDto);
         verify(response).setStatus(HttpServletResponse.SC_OK);
         verify(response).setContentType("application/json");
@@ -97,14 +99,15 @@ class CarHandlerImplTest {
     }
 
     @Test
-    @DisplayName("Обновление машины")
-    void update() throws IOException {
+    void update_WhenUpdatingCar_ExpectSuccessfulResponseWithCorrectContent() throws IOException {
         BufferedReader reader = new BufferedReader(new StringReader(jsonRequest));
         when(request.getReader()).thenReturn(reader);
         when(response.getWriter()).thenReturn(writer);
         when(objectMapper.readValue(jsonRequest, CarDto.class)).thenReturn(carDto);
         when(objectMapper.writeValueAsString(any(ApiResponse.class))).thenReturn("expectedResponse");
+
         carHandler.update(request, response);
+
         verify(carService).update(carDto);
         verify(response).setStatus(HttpServletResponse.SC_OK);
         verify(response).setContentType("application/json");
@@ -112,13 +115,14 @@ class CarHandlerImplTest {
     }
 
     @Test
-    @DisplayName("Удаление машины")
-    void deleteById() throws IOException {
-        when(request.getParameter("id")).thenReturn("1");
+    void deleteById_WhenDeletingCarById_ExpectSuccessfulResponseWithCorrectContent() throws IOException {
+        when(request.getPathInfo()).thenReturn("/1");
         when(response.getWriter()).thenReturn(writer);
         when(objectMapper.writeValueAsString(any(ApiResponse.class))).thenReturn("expectedResponse");
+
         carHandler.deleteById(request, response);
-        verify(carService).deleteById(1L);
+
+        verify(carService).deleteById(1);
         verify(response).setStatus(HttpServletResponse.SC_OK);
         verify(response.getWriter()).write("expectedResponse");
     }

@@ -14,7 +14,6 @@ import java.io.IOException;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@DisplayName("Тесты для RentalServlet")
 class RentalServletTest {
 
     private RentalHandler rentalHandler;
@@ -40,37 +39,32 @@ class RentalServletTest {
     }
 
     @Test
-    @DisplayName("Тест для get - запроса без параметра")
-    public void testDoGetWithoutIdParameter() throws ServletException, IOException {
+    public void doGet_WithoutIdParameter_AllCarRentalsReturned() throws ServletException, IOException {
         rentalServlet.doGet(request, response);
         verify(rentalHandler).findAll(request, response);
     }
 
     @Test
-    @DisplayName("Тест для get - запроса с параметром id")
-    public void testDoGetWithIdParameter() throws ServletException, IOException {
-        when(request.getParameter("id")).thenReturn("1");
+    public void doGet_WithIdParameter_CarRentalByIdReturned() throws ServletException, IOException {
+        when(request.getPathInfo()).thenReturn("/1");
         rentalServlet.doGet(request, response);
         verify(rentalHandler).findById(request, response);
     }
 
     @Test
-    @DisplayName("Тест для post - запроса")
-    public void testDoPost() throws ServletException, IOException {
+    public void doPost_CarRentalCreated() throws ServletException, IOException {
         rentalServlet.doPost(request, response);
         verify(rentalHandler).create(request, response);
     }
 
     @Test
-    @DisplayName("Тест для put - запроса")
-    public void testDoPut() throws ServletException, IOException {
+    public void doPut_CarRentalUpdated() throws ServletException, IOException {
         rentalServlet.doPut(request, response);
         verify(rentalHandler).update(request, response);
     }
 
     @Test
-    @DisplayName("Тест для delete - запроса")
-    public void testDoDelete() throws ServletException, IOException {
+    public void doDelete_CarRentalDeleted() throws ServletException, IOException {
         rentalServlet.doDelete(request, response);
         verify(rentalHandler).deleteById(request, response);
     }

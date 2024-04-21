@@ -13,7 +13,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Интеграционные тесты для RentalRepositoryImpl")
 class RentalRepositoryImplTest extends BaseDatabaseTest {
 
     private static CarRental carRental1;
@@ -50,8 +49,7 @@ class RentalRepositoryImplTest extends BaseDatabaseTest {
     }
 
     @Test
-    @DisplayName("Создание аренды автомобиля")
-    void create() {
+    void create_WhenCreatingCarRental_ExpectSuccessfulCreation() {
         CarRental carRental = new CarRental(0, 1, 1, Date.from(LocalDate.of(2024, 4, 25)
                 .atStartOfDay(ZoneId.systemDefault()).toInstant()), Date.from(LocalDate.of(2024, 4, 25)
                 .atStartOfDay(ZoneId.systemDefault()).toInstant()), RentalStatus.BOOKED);
@@ -60,20 +58,20 @@ class RentalRepositoryImplTest extends BaseDatabaseTest {
     }
 
     @Test
-    @DisplayName("Обновление данных аренды автомобиля")
-    void update() {
+    void update_WhenUpdatingCarRental_ExpectSuccessfulUpdate() {
         List<CarRental> rentals = rentalRepository.findAll();
         CarRental rental = rentals.get(0);
         rental.setStatus(RentalStatus.RENTED);
+
         rentalRepository.update(rental);
+
         CarRental updatedRental = rentalRepository.findById(rental.getId());
         assertThat(updatedRental).isNotNull();
         assertThat(updatedRental.getStatus()).isEqualTo(RentalStatus.RENTED);
     }
 
     @Test
-    @DisplayName("Обновление данных аренды автомобиля по несуществующему id")
-    void failUpdate() {
+    void update_WhenUpdatingCarRentalWithNonExistentId_ExpectEntityOperationException() {
         carRental1.setId(999999);
         assertThrows(EntityOperationException.class, () -> {
             rentalRepository.update(carRental1);
@@ -81,35 +79,38 @@ class RentalRepositoryImplTest extends BaseDatabaseTest {
     }
 
     @Test
-    @DisplayName("Получение всех арендных данных")
-    void findAll() {
+    void findAll_WhenRetrievingAllCarRentals_ExpectCorrectNumberOfCarRentals() {
         List<CarRental> rentals = rentalRepository.findAll();
         assertThat(rentals).isNotNull().hasSize(2);
     }
 
     @Test
-    @DisplayName("Получение данных аренды по id")
-    void findById() {
+    void findById_WhenRetrievingCarRentalById_ExpectCorrectCarRental() {
         List<CarRental> rentals = rentalRepository.findAll();
         CarRental rental = rentalRepository.findById(rentals.get(0).getId());
         assertThat(rental).isEqualTo(rentals.get(0));
     }
 
     @Test
-    @DisplayName("Получение данных аренды по несуществующему id")
-    void failFindById() {
+    void findById_WhenRetrievingCarRentalByNonExistentId_ExpectEntityOperationException() {
         assertThrows(EntityOperationException.class, () -> {
             rentalRepository.findById(999999);
         });
     }
 
     @Test
-    @DisplayName("Удаление данных аренды по id")
-    void deleteById() {
+    void deleteById_WhenDeletingCarRentalById_ExpectSuccessfulDeletion() {
         List<CarRental> rentals = rentalRepository.findAll();
         rentalRepository.deleteById(rentals.get(0).getId());
         assertThrows(EntityOperationException.class, () -> {
             rentalRepository.deleteById(rentals.get(0).getId());
+        });
+    }
+
+    @Test
+    void deleteById_WhenDeletingCarRentalByNonExistentId_ExpectEntityOperationException() {
+        assertThrows(EntityOperationException.class, () -> {
+            rentalRepository.deleteById(99999);
         });
     }
 }

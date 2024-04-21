@@ -14,7 +14,6 @@ import java.io.IOException;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@DisplayName("Тесты для ClientServlet")
 class ClientServletTest {
 
     private ClientHandler clientHandler;
@@ -40,37 +39,32 @@ class ClientServletTest {
     }
 
     @Test
-    @DisplayName("Тест для get - запроса без параметра")
-    public void testDoGetWithoutIdParameter() throws ServletException, IOException {
+    public void doGet_WithoutIdParameter_AllClientsReturned() throws ServletException, IOException {
         clientServlet.doGet(request, response);
         verify(clientHandler).findAll(request, response);
     }
 
     @Test
-    @DisplayName("Тест для get - запроса с параметром id")
-    public void testDoGetWithIdParameter() throws ServletException, IOException {
-        when(request.getParameter("id")).thenReturn("1");
+    public void doGet_WithIdParameter_ClientByIdReturned() throws ServletException, IOException {
+        when(request.getPathInfo()).thenReturn("/1");
         clientServlet.doGet(request, response);
         verify(clientHandler).findById(request, response);
     }
 
     @Test
-    @DisplayName("Тест для post - запроса")
-    public void testDoPost() throws ServletException, IOException {
+    public void doPost_ClientCreated() throws ServletException, IOException {
         clientServlet.doPost(request, response);
         verify(clientHandler).create(request, response);
     }
 
     @Test
-    @DisplayName("Тест для put - запроса")
-    public void testDoPut() throws ServletException, IOException {
+    public void doPut_ClientUpdated() throws ServletException, IOException {
         clientServlet.doPut(request, response);
         verify(clientHandler).update(request, response);
     }
 
     @Test
-    @DisplayName("Тест для delete - запроса")
-    public void testDoDelete() throws ServletException, IOException {
+    public void doDelete_ClientDeleted() throws ServletException, IOException {
         clientServlet.doDelete(request, response);
         verify(clientHandler).deleteById(request, response);
     }
